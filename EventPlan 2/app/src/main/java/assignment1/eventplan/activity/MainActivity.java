@@ -7,28 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import assignment1.eventplan.Constants;
 import assignment1.eventplan.R;
 import assignment1.eventplan.adapter.EventListAdapter;
-import assignment1.eventplan.entity.EventEntity;
-import assignment1.eventplan.utils.DbUtil;
+import assignment1.eventplan.db.dao.EventPlanDao;
+import assignment1.eventplan.db.master.EventPlanProvider;
+import assignment1.eventplan.entity.EventPlan;
 
-public class MainActivity extends AppCompatActivity {
-
-    Button Addbtn, CalendarViewbtn;
-
-    SwipeMenuListView lv;
-
-    List<EventEntity> list;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EventListAdapter adapter;
 
@@ -36,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void create(SwipeMenu menu) {
-            // create "open" item
+            // create "openDatabase" item
             SwipeMenuItem openItem = new SwipeMenuItem(
                     getApplicationContext());
             // set item background
@@ -66,66 +58,61 @@ public class MainActivity extends AppCompatActivity {
             menu.addMenuItem(deleteItem);
         }
     };
-    private Button allBtn;
 
     public int dip2px(float dpValue) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
+    @Override
+    public void onClick(View v) {
+        final int id = v.getId();
+        switch (id) {
+            case R.id.add_button:
+                startActivityForResult(new Intent(MainActivity.this, AddOrUpdateEventActivity.class), Constants.ADD_EVENT);
+                break;
+            case R.id.calendar_button:
+                startActivityForResult(new Intent(MainActivity.this, CalendarActivity.class), Constants.SEARCH_EVENT_BY_DATE);
+                break;
+            case R.id.all_button:
+                refreshData();
+                break;
+        }
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initViews();
+        refreshData();
+    }
 
-        Addbtn = (Button) findViewById(R.id.Addbtn);
-        allBtn = (Button) findViewById(R.id.Allbtn);
-        CalendarViewbtn = (Button) findViewById(R.id.CalendarViewbtn);
-        lv = (SwipeMenuListView) findViewById(R.id.lv);
-
-        Addbtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddActivity.class);
-                startActivityForResult(intent, 0x11);
-            }
-        });
-
-        allBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshData();
-            }
-        });
-        CalendarViewbtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Calendar.class);
-                startActivityForResult(intent, 0x12);
-            }
-        });
-
+    private void initViews() {
+        SwipeMenuListView lv = (SwipeMenuListView) findViewById(R.id.lv);
         // set creator
         lv.setMenuCreator(creator);
-
         lv.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-
         lv.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
-                    case 0:
-                        // edit
-                        Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                        intent.putExtra("eventId", list.get(position).getId());
-                        startActivityForResult(intent, 0x13);
+                    case 0:// edit
+                        Intent intent = new Intent(MainActivity.this, AddOrUpdateEventActivity.class);
+                        intent.putExtra(EventPlanDao.KEY, adapter.getItem(position));
+                        startActivityForResult(intent, Constants.UPDATE_EVENT);
                         break;
-                    case 1:
-                        // delete
-                        DbUtil.deleteEvent(list.get(position));
-                        refreshData();
+                    case 1:// delete
+                        EventPlan plan = adapter.getItem(position);
+                        if (null != plan) {
+                            EventPlanProvider.get().deleteEvent(plan);
+                        }
+                        adapter.notifyDataSetChanged();
                         break;
                 }
-                // false : close the menu; true : not close the menu
+                // false : closeIfNeed the menu; true : not closeIfNeed the menu
                 return false;
             }
         });
@@ -134,27 +121,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("eventId", list.get(position).getId());
+                intent.putExtra("eventId", adapter.getItem(position).getId());
                 startActivity(intent);
             }
         });
 
-        list = new ArrayList<>();
-        adapter = new EventListAdapter(this, list);
-        lv.setAdapter(adapter);
-
-        refreshData();
-
+        lv.setAdapter(adapter = new EventListAdapter(this));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 0x12) {
-                String date = data.getStringExtra("date");
-                list = DbUtil.getEventByDate(date);
-                adapter.setList(list);
+            if (requestCode == Constants.ADD_EVENT) {
+                boolean isAdd = data.getBooleanExtra("isAdd", false);
+                if (isAdd) {
+                    adapter.notifyDataSetChanged();
+                } else {
+                    refreshData();
+                }
+            } else if (requestCode == Constants.SEARCH_EVENT_BY_DATE) {
+                String dateStr = data.getStringExtra("date");
+                adapter.replaceData(EventPlanProvider.get().findAllPlanByDate(dateStr));
                 adapter.notifyDataSetChanged();
             } else {
                 refreshData();
@@ -163,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshData() {
-        list = DbUtil.getAllEvent();
-        adapter.setList(list);
+        adapter.replaceData(EventPlanProvider.get().getAllPlans());
         adapter.notifyDataSetChanged();
     }
+
 
 }
 

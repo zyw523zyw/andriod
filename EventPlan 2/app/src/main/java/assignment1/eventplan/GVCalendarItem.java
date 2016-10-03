@@ -15,7 +15,7 @@ public class GVCalendarItem {
     private boolean isToday;
     //how to show the day of week
     private int dayOfWeek;
-    //Calendar
+    //CalendarActivity
     private Calendar calendar;
 
     public GVCalendarItem(){

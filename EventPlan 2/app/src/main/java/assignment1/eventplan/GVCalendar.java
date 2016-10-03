@@ -4,21 +4,21 @@ package assignment1.eventplan;
  * Created by yumizhang on 16/8/24.
  */
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-
-import assignment1.eventplan.utils.DbUtil;
+import assignment1.eventplan.db.master.EventPlanProvider;
 
 public class GVCalendar extends GridView {
     Context context;
@@ -70,7 +70,7 @@ public class GVCalendar extends GridView {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (listener != null) {
-                    listener.onItemClick(parent, view, position, id, year + "-" + String.format("%02d", month) + "-" + items.get(position).getDateString());
+                    listener.onItemClick(parent, view, position, id, year + "-" + String.format(Locale.getDefault(), "%02d", month) + "-" + items.get(position).getDateString());
                 }
             }
         });
@@ -146,22 +146,22 @@ public class GVCalendar extends GridView {
             GVCalendarItem cb = new GVCalendarItem();
             cb.setDateString(i + "");
             cb.setLastOrNextMonth(false);
-            if (i == day && calToday.get(Calendar.YEAR) == year && calToday.get(Calendar.MONTH) == month - 1) {
+            if (i == day && calToday.get(Calendar.YEAR) == year && calToday.get(Calendar.MONTH) + 1 == month) {
                 cb.setToday(true);
             }
             //if has plan
-            String date = year + String.format("-%02d", month) + String.format("-%02d", i);
-            if (DbUtil.hasPlan(date)) {
+            String date = year + String.format("-%02d-%02d", month, i);
+            if (EventPlanProvider.hasPlan(date + " 00:00:01")) {
                 cb.setHasPlan(true);
             } else {
                 cb.setHasPlan(false);
             }
             //set week
-            cb.setDayOfWeek(dayForWeek(year + "-" + month + String.format("-%02d", i)));
+            cb.setDayOfWeek(dayForWeek(date));
             //add the item to list
             items.add(cb);
         }
-        //last day not Saturday? fill a few days from next month
+        //Fill a few days from next month
         if ((firstDayOfWeek - 1 + days) % 7 != 0) {
             for (int i = 1; i <= 7 - (firstDayOfWeek - 1 + days) % 7; i++) {
                 GVCalendarItem cb = new GVCalendarItem();

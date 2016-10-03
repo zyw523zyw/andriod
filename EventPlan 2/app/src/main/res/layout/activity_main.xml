@@ -19,28 +19,29 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Addbtn"
+                android:id="@+id/add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
+                android:onClick="onClick"
                 android:text="Add" />
 
             <Button
-                android:id="@+id/Allbtn"
+                android:id="@+id/all_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
+                android:onClick="onClick"
                 android:text="All" />
 
             <Button
-                android:id="@+id/CalendarViewbtn"
+                android:id="@+id/calendar_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="3dp"
-                android:background="@android:color/black"
-                android:text="CalendarView"
-                android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+                android:onClick="onClick"
+                android:text="CalendarView" />
         </LinearLayout>
 
         <com.baoyz.swipemenulistview.SwipeMenuListView

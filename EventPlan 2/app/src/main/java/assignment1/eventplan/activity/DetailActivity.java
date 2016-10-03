@@ -1,61 +1,67 @@
 package assignment1.eventplan.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import assignment1.eventplan.ContactsPickerActivity;
 import assignment1.eventplan.R;
-import assignment1.eventplan.entity.EventEntity;
-import assignment1.eventplan.utils.DbUtil;
+import assignment1.eventplan.db.master.EventPlanProvider;
+import assignment1.eventplan.entity.EventPlan;
+import assignment1.eventplan.utils.DateUtil;
 
 /**
- * Created by ZZ on 2016/8/27.
+ * Created by YumiZhang on 2016/8/27.
  */
 public class DetailActivity extends AppCompatActivity {
-
-    TextView etEventTitle;
-    private TextView venueEdit;
-    private TextView etLat;
-    private TextView etNote;
-    private EventEntity eventEntity;
-
-    private TextView startEdit, endEdit;
-    private TextView etAtten;
+    private long eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        if (initData(null == savedInstanceState ? getIntent().getExtras() : savedInstanceState)) {
+            setContentView(R.layout.activity_detail);
+            initViews();
+        } else {
+            Toast.makeText(this, " miss event!!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
-        etEventTitle = (TextView) findViewById(R.id.etEventTitle);
-        startEdit = (TextView) findViewById(R.id.startEditText);
-        endEdit = (TextView) findViewById(R.id.endEditText);
-        venueEdit = (TextView) findViewById(R.id.etVeune);
-        etLat = (TextView) findViewById(R.id.etLat);
-        etAtten = (TextView) findViewById(R.id.etAtten);
-        etNote = (TextView) findViewById(R.id.etNote);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("eventId", eventId);
+    }
 
-        int eventId = getIntent().getIntExtra("eventId", -1);
-        if (eventId != -1) {
-            eventEntity = DbUtil.getEventById(eventId);
-            initData(eventEntity);
+    private void initViews() {
+        TextView etEventTitle = (TextView) findViewById(R.id.etEventTitle);
+        TextView startEdit = (TextView) findViewById(R.id.startEditText);
+        TextView endEdit = (TextView) findViewById(R.id.endEditText);
+        TextView venueEdit = (TextView) findViewById(R.id.etVeune);
+        TextView etAtten = (TextView) findViewById(R.id.etAtten);
+        TextView etNote = (TextView) findViewById(R.id.etNote);
+
+        EventPlan eventEntity = EventPlanProvider.get().getEventById(eventId);
+        if (null != eventEntity) {
+            etEventTitle.setText(eventEntity.getTitle());
+            startEdit.setText(DateUtil.format(eventEntity.getStartDateTime()));
+            endEdit.setText(DateUtil.format(eventEntity.getEndDateTime()));
+            venueEdit.setText(eventEntity.getAddress());
+            etAtten.setText(eventEntity.getAttendees());
+            etNote.setText(eventEntity.getNote());
+        } else {
+            Toast.makeText(this, " miss event!!", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
     }
 
-    private void initData(EventEntity eventEntity) {
-        if (eventEntity != null) {
-            etEventTitle.setText(eventEntity.getTitle());
-            startEdit.setText(eventEntity.getStartDate()+" "+eventEntity.getStartTime());
-            endEdit.setText(eventEntity.getEndDate()+" "+eventEntity.getEndTime());
-            venueEdit.setText(eventEntity.getVeune());
-            etLat.setText("("+eventEntity.getLocationX()+","+eventEntity.getLocationY()+")");
-            etAtten.setText(eventEntity.getAttendees());
-            etNote.setText(eventEntity.getNote());
-        }
+
+    private boolean initData(Bundle bundle) {
+        if (null == bundle)
+            return false;
+        return (eventId = bundle.getLong("eventId", -1)) > 0;
     }
 
 

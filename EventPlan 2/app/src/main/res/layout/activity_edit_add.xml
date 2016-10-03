@@ -1,255 +1,194 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/close_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Event Title"
-                android:textSize="20sp" />
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:minWidth="48dp"
+                android:onClick="onClick"
+                android:text="X"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/etEventTitle"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/title_input"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="24dp"
+                android:textColorHint="@android:color/white"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Hint">
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/startTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="Start-Date"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/startEditText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/startTextView"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_toRightOf="@id/startTextView"
-                    android:layout_alignParentBottom="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/startTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="Start-Time"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/startTimeEditText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/startTimeTextView"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_toRightOf="@id/startTimeTextView"
-                    android:layout_alignParentBottom="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/endTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="End-Date"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/endEditText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/endTextView"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_toRightOf="@id/endTextView"
-                    android:layout_alignParentBottom="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/endTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="End-Time"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/endTimeEditText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/endTimeTextView"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_toRightOf="@id/endTimeTextView"
-                    android:layout_alignParentBottom="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/TextVeune"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="Veune"
-                    android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/etVeune"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/TextVeune"
-                    android:singleLine="true"
+                    android:id="@+id/title_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Title:"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
                     android:textSize="20sp" />
-            </RelativeLayout>
+
+            </android.support.design.widget.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/TetLocation"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/start_date_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="Location"
-                android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/etLat"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="20sp" />
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/selector_btn_dark"
+                android:onClick="onClick"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/etLog"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="20sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:text="Start-Date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/white" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/start_date_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@android:color/white"
+                    android:minHeight="36dp"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/end_date_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/selector_btn_dark"
+                android:onClick="onClick"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End - Date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/end_date_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@android:color/white"
+                    android:minHeight="36dp"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- content_area -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:showDividers="middle|end">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/address_input"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/TextAtten"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="Attendees"
-                    android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/etAtten"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:minHeight="50dp"
-                    android:layout_toRightOf="@+id/TextAtten"
-                    />
-                <View
+                <EditText
+                    android:id="@+id/address_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_toRightOf="@id/TextAtten"
-                    android:layout_alignParentBottom="true"/>
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="Vuene"
+                    android:minHeight="36dp"
+                    android:paddingLeft="0dp"
 
-            </RelativeLayout>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:id="@+id/TextNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="Note"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/etNote"
+                android:id="@+id/attendees_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:gravity="center_vertical"
-                android:textSize="20sp" />
+                android:hint="Attendees"
+                android:minHeight="36dp"
+                android:lineSpacingExtra="3dp"
+                android:onClick="onClick"
+                android:paddingLeft="0dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-            <Button
-                android:id="@+id/btOk"
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/note_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="OK" />
+                android:paddingTop="6dp">
+
+
+                <EditText
+                    android:id="@+id/note_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="left|top"
+                    android:hint="Note"
+                    android:lineSpacingExtra="3dp"
+                    android:lines="3"
+
+                    android:paddingLeft="0dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
         </LinearLayout>
-    </ScrollView>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="OK"
+            android:onClick="onClick"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</ScrollView>
