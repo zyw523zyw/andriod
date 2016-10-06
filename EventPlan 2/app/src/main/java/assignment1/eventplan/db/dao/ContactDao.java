@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import assignment1.eventplan.db.master.EventPlanDatabaseMaster;
+
 import assignment1.eventplan.entity.Contact;
 
 /**

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import assignment1.eventplan.db.master.EventPlanDatabaseMaster;
 import assignment1.eventplan.entity.EventPlan;
 
 /**
@@ -36,8 +35,8 @@ public final class EventPlanDao {
                 + Field.END_DATE_TIME + " INTEGER,"
                 + Field.ADDRESS + " TEXT,"
                 + Field.ATTENDEES + " TEXT,"
-                + Field.NOTE + " TEXT"
-                + Field.DATE + " INTEGER,"
+                + Field.NOTE + " TEXT,"
+                + Field.DATE + " INTEGER"
                 + ")";
     }
 

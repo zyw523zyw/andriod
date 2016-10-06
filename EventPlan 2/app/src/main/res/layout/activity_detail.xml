@@ -72,8 +72,8 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:textSize="20sp" />
-
         </LinearLayout>
+
 
 
         <LinearLayout
@@ -99,6 +99,21 @@
                 android:minHeight="50dp"
                 android:singleLine="true"
                 android:textSize="20sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/mapview_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Map view"
+                android:onClick="onClick"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
 
