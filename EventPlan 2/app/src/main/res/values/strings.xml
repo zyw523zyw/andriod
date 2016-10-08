@@ -2,5 +2,7 @@
     <string name="app_name">EventPlan</string>
     <string name="txt_done">Done</string>
     <string name="txt_search">Search</string>
+    <string name="key_google_map">AIzaSyByuI-5l6vXmqFBBo1efyLxlgA5K87p57c</string>
     <string name="title_activity_place_picker">PlacePickerActivity</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

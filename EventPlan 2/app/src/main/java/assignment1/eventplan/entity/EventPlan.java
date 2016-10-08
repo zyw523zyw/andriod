@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import assignment1.eventplan.db.master.ContactMemory;
@@ -25,6 +27,11 @@ public final class EventPlan implements Parcelable, Comparable<EventPlan> {
     private String note;
     private long date;
 
+    private LatLng latLng;
+    private String addressName;
+    private String addressAttributions;
+
+
     // relationship 1:∞
     private List<Contact> contacts;
 
@@ -43,6 +50,9 @@ public final class EventPlan implements Parcelable, Comparable<EventPlan> {
         attendees = in.readString();
         note = in.readString();
         date = in.readLong();
+        latLng = in.readParcelable(LatLng.class.getClassLoader());
+        addressName = in.readString();
+        addressAttributions = in.readString();
         contacts = in.createTypedArrayList(Contact.CREATOR);
     }
 
@@ -56,6 +66,9 @@ public final class EventPlan implements Parcelable, Comparable<EventPlan> {
         dest.writeString(attendees);
         dest.writeString(note);
         dest.writeLong(date);
+        dest.writeParcelable(latLng, flags);
+        dest.writeString(addressName);
+        dest.writeString(addressAttributions);
         dest.writeTypedList(contacts);
     }
 
@@ -141,8 +154,8 @@ public final class EventPlan implements Parcelable, Comparable<EventPlan> {
     }
 
     /**
-     * //TODO 1. 当无关联 联系人时 返回的为 emptyList, 不可进行 增删操作,如需操作 需要覆盖list 2. 非线程安全,在调用时需留意
-     *
+     * //1. When no associated contact for the return emptyList, can not add or delete operations, such as the need to cover the operation list .
+     * //2. Non-thread-safe, in the call to note
      * @return contacts,
      */
     @NonNull
@@ -160,5 +173,30 @@ public final class EventPlan implements Parcelable, Comparable<EventPlan> {
     @Override
     public int compareTo(EventPlan o) {
         return (int) (startDateTime - o.startDateTime);
+    }
+
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public String getAddressAttributions() {
+        return addressAttributions;
+    }
+
+    public void setAddressAttributions(String addressAttributions) {
+        this.addressAttributions = addressAttributions;
     }
 }

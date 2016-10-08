@@ -98,14 +98,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lv.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                EventPlan plan = adapter.getItem(position);
                 switch (index) {
                     case 0:// edit
                         Intent intent = new Intent(MainActivity.this, AddOrUpdateEventActivity.class);
-                        intent.putExtra(EventPlanDao.KEY, adapter.getItem(position));
+                        intent.putExtra(EventPlanDao.Field.ID, plan.getId());
+                        intent.putExtra(EventPlanDao.KEY, plan);
                         startActivityForResult(intent, Constants.UPDATE_EVENT);
                         break;
                     case 1:// delete
-                        EventPlan plan = adapter.getItem(position);
                         if (null != plan) {
                             EventPlanProvider.get().deleteEvent(plan);
                         }

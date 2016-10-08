@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-
 import assignment1.eventplan.entity.Contact;
 
 /**
@@ -43,6 +42,8 @@ public class ContactDao {
         values.put(Field.LABEL, contact.getLabel());
         return values;
     }
+
+
 
     /**
      * 注意:

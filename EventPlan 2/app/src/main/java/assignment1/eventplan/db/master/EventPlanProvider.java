@@ -19,14 +19,14 @@ public class EventPlanProvider {
         static final EventPlanProvider holder = new EventPlanProvider();
     }
 
-    private List<EventPlan> allPlans;
-    private LongSparseArray<List<EventPlan>> allDatePlans;
+    private final LongSparseArray<EventPlan> allEvenPlans;
+    private final LongSparseArray<List<EventPlan>> allDatePlans;
 
     private EventPlanProvider() {
-        allPlans = EventPlanDatabaseMaster.getAllEvent();
         allDatePlans = new LongSparseArray<>();
-        for (EventPlan plan : allPlans) {
-            add2AllDateCache(plan);
+        EventPlanDatabaseMaster.getAllEvent(allEvenPlans = new LongSparseArray<>());
+        for (int i = 0, size = allEvenPlans.size(); i < size; i++) {
+            add2AllDateCache(allEvenPlans.valueAt(i));
         }
     }
 
@@ -36,6 +36,11 @@ public class EventPlanProvider {
 
 
     public List<EventPlan> getAllPlans() {
+        final int size = allEvenPlans.size();
+        List<EventPlan> allPlans = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            allPlans.add(allEvenPlans.valueAt(i));
+        }
         return allPlans;
     }
 
@@ -44,14 +49,14 @@ public class EventPlanProvider {
         final boolean isInsert = plan.getId() < 1;
         EventPlanDatabaseMaster.insertOrUpdate(plan);
         if (isInsert) {
-            allPlans.add(plan);
+            allEvenPlans.put(plan.getId(), plan);
             add2AllDateCache(plan);
         }
     }
 
 
     public void deleteEvent(EventPlan plan) {
-        allPlans.remove(plan);
+        allEvenPlans.remove(plan.getId());
         removeFromAllDateCache(plan);
         EventPlanDatabaseMaster.deleteEvent(plan);
 
@@ -95,11 +100,7 @@ public class EventPlanProvider {
 
     @Nullable
     public EventPlan getEventById(long eventId) {
-        for (EventPlan plan : allPlans) {
-            if (plan.getId() == eventId)
-                return plan;
-        }
-        return null;
+        return allEvenPlans.get(eventId);
     }
 
 

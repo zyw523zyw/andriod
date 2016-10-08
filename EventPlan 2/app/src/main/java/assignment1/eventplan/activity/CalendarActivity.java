@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import assignment1.eventplan.GVCalendar;
 import assignment1.eventplan.GVCalendarItem;
 import assignment1.eventplan.R;

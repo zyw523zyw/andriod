@@ -32,9 +32,7 @@ public final class DatabaseEngine {
     }
 
     /**
-     * //TODO
-     * 注意:操作执行于当前调用所在的线程,如果是UI Thread 需避免耗时操作,避免ANR
-     *
+     * //Note: the operation of the implementation of the current call in the thread, if it is to avoid time-consuming UI Thread operation, to avoid ANR
      * @param callback onTransaction callback
      */
     public static void transaction(Callback callback) {

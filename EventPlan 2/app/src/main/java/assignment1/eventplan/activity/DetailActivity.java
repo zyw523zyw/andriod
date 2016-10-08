@@ -2,6 +2,7 @@ package assignment1.eventplan.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +14,7 @@ import assignment1.eventplan.utils.DateUtil;
 /**
  * Created by YumiZhang on 2016/8/27.
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     private long eventId;
 
     @Override
@@ -47,7 +48,7 @@ public class DetailActivity extends AppCompatActivity {
             etEventTitle.setText(eventEntity.getTitle());
             startEdit.setText(DateUtil.format(eventEntity.getStartDateTime()));
             endEdit.setText(DateUtil.format(eventEntity.getEndDateTime()));
-            venueEdit.setText(eventEntity.getAddress());
+            venueEdit.setText(eventEntity.getAddress() + " " + eventEntity.getAddress());
             etAtten.setText(eventEntity.getAttendees());
             etNote.setText(eventEntity.getNote());
         } else {
@@ -65,4 +66,13 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        final int id = v.getId();
+        switch (id) {
+            case R.id.mapview_button:
+                break;
+        }
+
+    }
 }

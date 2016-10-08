@@ -17,9 +17,6 @@ import assignment1.eventplan.R;
 import assignment1.eventplan.entity.EventPlan;
 import assignment1.eventplan.utils.DateUtil;
 
-/**
- * Created by zz on 2016/8/26.
- */
 public class EventListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;

@@ -2,7 +2,9 @@ package assignment1.eventplan.db.master;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.LongSparseArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,21 +96,20 @@ final class EventPlanDatabaseMaster {
 
 
     /**
-     * @return all evnets
+     * @param allPlans all event
      */
-    public static List<EventPlan> getAllEvent() {
+    public static void getAllEvent(@NonNull LongSparseArray<EventPlan> allPlans) {
         SQLiteDatabase database = DatabaseEngine.openDatabase();
-        List<EventPlan> result = new ArrayList<>();
         Cursor cursor = null;
         try {
             cursor = database.query(EventPlanDao.TABLE_NAME, null, null, null, null, null, EventPlanDao.Field.START_DATE_TIME + " asc");
+            allPlans.clear();
             while (cursor.moveToNext()) {
                 EventPlan plan = EventPlanDao.createFromCursor(cursor);
                 if (null == plan)
                     continue;
-                result.add(plan);
+                allPlans.put(plan.getId(), plan);
             }
-            return result;
         } finally {
             if (null != cursor)
                 cursor.close();

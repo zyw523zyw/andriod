@@ -45,7 +45,8 @@ public final class DateUtil {
         return dateTime <= 0 ? "" : get().getFormat().format(dateTime);
     }
 
-    /*
+
+    /**
      * // yyyy-MM-dd 00:00:01 dateBegin
      * // yyyy-MM-dd 23:59:59 dateEnd
      *
@@ -61,6 +62,8 @@ public final class DateUtil {
         long dateBegin;
         long dateEnd;
         try {
+            // yyyy-MM-dd 00:00:01 dateBegin
+            // yyyy-MM-dd 23:59:59 dateEnd
             Date date = dateFormat.parse(dateStr);
             calendar = get().getCalendar();
             calendar.setTimeInMillis(date.getTime());
@@ -70,6 +73,7 @@ public final class DateUtil {
             calendar.add(Calendar.SECOND, -2);
             dateEnd = calendar.getTimeInMillis();
         } catch (ParseException e) {
+            //parse error, so skip it
             e.printStackTrace();
             return null;
         }

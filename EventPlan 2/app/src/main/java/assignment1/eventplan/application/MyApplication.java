@@ -5,12 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.maps.MapsInitializer;
 
 import assignment1.eventplan.services.ContactBackupService;
 
-/**
- * Created by zz on 2016/8/26.
- */
+
 public class MyApplication extends Application {
     static volatile MyApplication mInstance;
 
@@ -27,9 +29,11 @@ public class MyApplication extends Application {
         super.onCreate();
         mInstance = this;
         if (isMyApplicationProcess(this)) {
-
             startService(new Intent(this, ContactBackupService.class));
+            final int connectCode = MapsInitializer.initialize(this);
+            Log.e("MapsInitializer", "isConnected:" + (connectCode == ConnectionResult.SUCCESS) + ",code:" + connectCode);
         }
+
     }
 
 

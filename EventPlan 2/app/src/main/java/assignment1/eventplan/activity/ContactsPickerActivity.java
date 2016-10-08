@@ -9,16 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.ArraySet;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import assignment1.eventplan.R;
 import assignment1.eventplan.adapter.ContactsListAdapter;
 import assignment1.eventplan.db.master.ContactMemory;
@@ -80,11 +75,9 @@ public class ContactsPickerActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
+        ArrayList<Contact> contacts = new ArrayList<>(contactsList.getCheckedItemCount());
         SparseBooleanArray checkedArray = contactsList.getCheckedItemPositions();
-        if (null == checkedArray || checkedArray.size() == 0) {
-            setResult(RESULT_CANCELED);
-        } else {
-            ArrayList<Contact> contacts = new ArrayList<>(contactsList.getCheckedItemCount());
+        if (null != checkedArray && checkedArray.size() > 0) {
             for (int i = 0, size = checkedArray.size(); i < size; i++) {
                 int position = checkedArray.keyAt(i);
                 boolean checked = checkedArray.valueAt(i);
@@ -92,11 +85,10 @@ public class ContactsPickerActivity extends AppCompatActivity implements View.On
                     contacts.add(contactsAdapter.getItem(position));
                 }
             }
-            Intent resultIntent = new Intent();
-            resultIntent.putParcelableArrayListExtra("SelectedContacts", contacts);
-            setResult(RESULT_OK, resultIntent);
-
         }
+        Intent resultIntent = new Intent();
+        resultIntent.putParcelableArrayListExtra("SelectedContacts", contacts);
+        setResult(RESULT_OK, resultIntent);
         finish();
     }
 
